@@ -1,0 +1,88 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/startups/new.rss"
+      },
+      "name": "Reddit Startups RSS",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "prompt": "=Actúa como un Lead Scout táctico para la agencia 'Parcero'. Analiza este post de Reddit. Busca problemas de ineficiencia, necesidad de automatización, integraciones rotas o cuellos de botella manuales.\n\nDevuelve estrictamente un objeto JSON con estas 4 claves:\n1. \"is_lead\": boolean (true si es una oportunidad de negocio, false si es ruido o teoría).\n2. \"urgency\": number (del 1 al 10).\n3. \"pain_point\": string (resumen del problema en 1 línea).\n4. \"parcero_pitch\": string (Un mensaje de respuesta en inglés, directo, sin 'bullshit' corporativo corporativo, proponiendo hablar). \n\nPost Title: {{$json[\"title\"]}}\nPost Content: {{$json[\"content\"]}}",
+        "responseFormat": "json"
+      },
+      "name": "OpenAI Analista",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ JSON.parse($json[\"message\"][\"content\"]).is_lead }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Filtro de Leads (IF)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "TU_CHAT_ID_AQUI",
+        "text": "=🎯 NUEVO LEAD DETECTADO\n\n🔥 Urgencia: {{ JSON.parse($json[\"message\"][\"content\"]).urgency }}/10\n📌 Problema: {{ JSON.parse($json[\"message\"][\"content\"]).pain_point }}\n\n💬 Pitch Parcero Sugerido:\n\"{{ JSON.parse($json[\"message\"][\"content\"]).parcero_pitch }}\"\n\n🔗 Enlace: {{$node[\"Reddit Startups RSS\"].json[\"link\"]}}",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "name": "Telegram Notificación",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [950, 280]
+    }
+  ],
+  "connections": {
+    "Reddit Startups RSS": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Analista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Analista": {
+      "main": [
+        [
+          {
+            "node": "Filtro de Leads (IF)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtro de Leads (IF)": {
+      "main": [
+        [
+          {
+            "node": "Telegram Notificación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
