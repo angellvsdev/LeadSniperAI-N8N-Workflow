@@ -1,31 +1,31 @@
 # 🎯 Lead Sniper AI: Autonomous Prospecting Engine
-Lead Sniper AI es un motor de prospección autónomo diseñado para identificar oportunidades de negocio en tiempo real dentro de comunidades tecnológicas. Utiliza un enfoque de análisis semántico impulsado por IA para detectar "puntos de dolor" técnicos y generar propuestas de valor inmediatas.
+Lead Sniper AI is an autonomous prospecting engine designed to identify business opportunities in real time within tech communities. It uses an AI-powered semantic analysis approach to detect technical “pain points” and generate immediate value propositions.
 
-# 🚀 Descripción General
-A diferencia de los scrapers tradicionales basados en palabras clave, este flujo de trabajo orquestado en n8n utiliza modelos de lenguaje de gran escala (LLM) para entender la intención y la urgencia detrás de cada publicación en foros como Hacker News o Reddit.
+# 🚀 Overview
+Unlike traditional keyword-based scrapers, this workflow orchestrated in n8n uses large-scale language models (LLMs) to understand the intent and urgency behind each post on forums like Hacker News or Reddit.
 
-El sistema monitoriza fuentes RSS, procesa la información a través de Groq (Llama 3) para una inferencia de baja latencia y entrega leads calificados directamente a un bot de Telegram con un pitch personalizado listo para ser enviado.
+The system monitors RSS feeds, processes the information through Groq (Llama 3) for low-latency inference, and delivers qualified leads directly to a Telegram bot with a personalized pitch ready to be sent.
 
-# ✨ Características Principales
-- Monitoreo Multicanal: Integración con feeds RSS de comunidades de alta señal (Hacker News, Reddit, etc.).
-- Cerebro de IA (Groq + Llama 3): Análisis profundo de texto para filtrar ruido y detectar necesidades reales de infraestructura, automatización o desarrollo.
-- Lead Scoring Dinámico: Clasificación automática por nivel de urgencia (1-10) y resumen del problema principal.
-- Generación de Pitch Contextual: Redacción automática de mensajes de contacto adaptados al tono y estilo de la empresa.
-- Arquitectura de Microservicios: Desplegado mediante Docker para garantizar portabilidad y escalabilidad.
+# ✨ Key Features
+- Multi-Channel Monitoring: Integration with RSS feeds from high-signal communities (Hacker News, Reddit, etc.).
+- AI Brain (Groq + Llama 3): Deep text analysis to filter out noise and detect real needs for infrastructure, automation, or development.
+- Dynamic Lead Scoring: Automatic classification by urgency level (1-10) and summary of the main issue.
+- Contextual Pitch Generation: Automatic drafting of contact messages tailored to the company’s tone and style.
+- Microservices Architecture: Deployed via Docker to ensure portability and scalability.
 
-🛠️ Stack Técnico
-- Orquestador: n8n.
-- Motor de IA: Groq API (Llama 3-70b).
-- Notificaciones: Telegram Bot API.
-- Infraestructura: Docker & Docker Compose.
-- Hardware de Desarrollo: Dell Latitude 7400.
+🛠️ Technical Stack
+- Orchestrator: n8n.
+- AI Engine: Groq API (Llama 3-70b).
+- Notifications: Telegram Bot API.
+- Infrastructure: Docker & Docker Compose.
+- Development Hardware: Dell Latitude 7400.
 
-📦 Instalación y Despliegue
-- Requisitos previos
-- Docker y Docker Compose instalados.
-- API Keys de Groq y Telegram Bot Token.
+📦 Installation and Deployment
+- Prerequisites
+- Docker and Docker Compose installed.
+- Groq API Keys and Telegram Bot Token.
 
-Ejecución con Docker Bash
+Execution with Docker Bash
 
 ```
   docker run -d \
@@ -35,12 +35,12 @@ Ejecución con Docker Bash
   docker.n8n.io/n8nio/n8n
 ```
 
-# 🧠 Lógica del Workflow
-- Trigger: Nodo RSS consulta nuevas entradas cada 15 minutos.
-- Brain: El nodo de IA evalúa el contenido. Si el parámetro is_lead es true, el flujo continúa.
-- Filter: Un nodo condicional valida la respuesta del LLM.
-- Action: Envío de notificación enriquecida a Telegram.
+# 🧠 Workflow Logic
+- Trigger: RSS node checks for new entries every 15 minutes.
+- Brain: The AI node evaluates the content. If the is_lead parameter is true, the workflow continues.
+- Filter: A conditional node validates the LLM's response.
+- Action: Sends an enriched notification to Telegram.
 
 --- 
-Desarrollado con mentalidad de solucionador de problemas por Angel Leonardo Vera Soto.
-Ingeniero de Sistemas y Software
+Developed with a problem-solving mindset by Angel Leonardo Vera Soto.
+Systems and Software Engineer
